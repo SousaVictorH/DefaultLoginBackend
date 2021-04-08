@@ -1,0 +1,77 @@
+const { UserModel, AddressModel } = require('../domain/models');
+
+const { badRequest } = require('../helpers/httpResponse');
+
+const { unauthorized } = require('../helpers/messages');
+
+const { validations, encrypter, compare, generateToken } = require('../utils');
+
+const { Login, SignUp, Authenticate } = require('../domain/useCases');
+
+const UsersDatabase = require('../databases/UsersDatabase');
+
+module.exports = {
+    async signUp(name, genre, dateOfBirth, email, password, phone, address) {
+        try {
+            const params = {
+                name,
+                genre,
+                dateOfBirth,
+                email,
+                password,
+                phone,
+            };
+            const source = 'UserController - singUp';
+
+            const addressModel = AddressModel(address);
+
+            validations.missingParam({source, listParams: params});
+            validations.paramsIsMalformed({source, listParams: params});
+
+            validations.missingParam({source, listParams: addressModel});
+
+            const passwordEncrypted = await encrypter(password);
+
+            const user = UserModel({
+                ...params,
+                address: addressModel,
+                password: passwordEncrypted,
+            });
+
+            const newUser = await SignUp(user, UsersDatabase);
+
+            delete newUser.password;
+
+            return newUser;
+        } catch (error) {
+            throw error;
+        }
+    },
+
+    async login(email, password) {
+        try {
+            const params = {
+                email,
+                password
+            };
+            const source = 'UserController - Login';
+
+            validations.missingParam({ source, listParams: params });
+            validations.paramsIsMalformed({ source, listParams: params });
+            validations.emailIsValid({ source, email });
+
+            const logged = await Login(email, password, UsersDatabase, compare);
+
+            if (!logged) {
+                throw badRequest({
+                    source,
+                    message: unauthorized,
+                  });
+            }
+
+            return await Authenticate(logged, generateToken);
+        } catch (error) {
+            throw error;
+        }
+    },
+};
