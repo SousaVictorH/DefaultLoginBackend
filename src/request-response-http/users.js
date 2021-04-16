@@ -4,6 +4,7 @@ module.exports = {
     async update(req, res) {
         try {
             const {
+                userID,
                 name,
                 genre,
                 dateOfBirth,
@@ -13,7 +14,8 @@ module.exports = {
                 address,
               } = req.body;
 
-              await UsersController.update(
+              await UsersController.update({
+                userID,
                 name,
                 genre,
                 dateOfBirth,
@@ -21,7 +23,7 @@ module.exports = {
                 password,
                 phone,
                 address,
-              );
+              });
 
               return res.status(200).json();
         } catch (error) {

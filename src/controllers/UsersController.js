@@ -5,7 +5,7 @@ const { unauthorized } = require('../helpers/messages');
 
 const { validations, encrypter, compare, generateToken } = require('../utils');
 
-const { Login, SignUp, Authenticate } = require('../domain/useCases');
+const { Login, SignUp, Authenticate, Update } = require('../domain/useCases');
 
 const {
     removeUndefinedParams,
