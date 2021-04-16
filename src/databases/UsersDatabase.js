@@ -4,6 +4,7 @@ const UsersDatabaseMongoDB = require('../infra/database/mongodb/adapters/UserDat
 
 const { serverError } = require('../helpers/httpResponse');
 const { objects } = require('../utils');
+const { update } = require('../infra/database/mongodb/models/user');
 
 module.exports = {
     async create(user) {
@@ -23,6 +24,14 @@ module.exports = {
             return await UsersDatabaseMongoDB.read(filters);
         } catch (error) {
             throw serverError('UsersDatabase - getUser', '');
+        }
+    },
+
+    async update(filters, toUpdate) {
+        try {
+            await UsersDatabaseMongoDB.update(filters, toUpdate);
+        } catch (error) {
+            throw serverError('UsersDatabase - updateUse', '');
         }
     }
 };

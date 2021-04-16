@@ -1,12 +1,16 @@
 const { UserModel, AddressModel } = require('../domain/models');
 
 const { badRequest } = require('../helpers/httpResponse');
-
 const { unauthorized } = require('../helpers/messages');
 
 const { validations, encrypter, compare, generateToken } = require('../utils');
 
 const { Login, SignUp, Authenticate } = require('../domain/useCases');
+
+const {
+    removeUndefinedParams,
+    objIsEmpty
+} = require('../utils/objects');
 
 const UsersDatabase = require('../databases/UsersDatabase');
 
@@ -74,4 +78,39 @@ module.exports = {
             throw error;
         }
     },
+
+    async update({
+        userID,
+        name,
+        genre,
+        password,
+        dateOfBirth,
+        email,
+        phone,
+        address,
+    }) {
+        try {
+            const data = {
+                name,
+                genre,
+                dateOfBirth,
+                email,
+                phone,
+                address,
+            }
+
+            removeUndefinedParams(data);
+
+            if (objIsEmpty(data)){
+                const passwordEncrypted = await encrypter(password);
+                data.password = passwordEncrypted;
+            }
+
+            const filters = { _id: userID };
+
+            await Update(filters, data, UsersDatabase); 
+        } catch (error) {
+            throw error;
+        }
+    }
 };

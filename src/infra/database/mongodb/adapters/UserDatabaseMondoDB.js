@@ -1,3 +1,4 @@
+const { update } = require('../../../../databases/UsersDatabase');
 const { Users } = require('../models');
 
 module.exports = {
@@ -25,4 +26,12 @@ module.exports = {
       throw error;
     }
   },
+
+  async update(filters, toUpdate) {
+    try {
+      await Users.updateOne(filters, toUpdate, { new: true });
+    } catch (error) {
+      throw error;
+    }
+  }
 };

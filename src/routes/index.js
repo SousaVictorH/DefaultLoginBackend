@@ -2,6 +2,7 @@ const routes = require('express').Router();
 
 const singup = require('./singup');
 const login = require('./login');
+const user = require('./user');
 
 // RETURNS API VERSION
 routes.get('/', (req, res) => {
@@ -10,5 +11,6 @@ routes.get('/', (req, res) => {
 
 routes.use('/signup', singup);
 routes.use('/login', login);
+routes.use('/user', user);
 
 module.exports = routes;
