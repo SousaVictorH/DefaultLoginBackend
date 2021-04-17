@@ -1,4 +1,4 @@
-const { update } = require('../../../../databases/UsersDatabase');
+const { UserModel } = require('../../../../domain/models');
 const { Users } = require('../models');
 
 module.exports = {
@@ -19,8 +19,8 @@ module.exports = {
       const user = await Users.findOne(params);
 
       if (!user) return undefined;
-
-      return user;
+      
+      return UserModel(user);
     } catch (error) {
       console.log(error);
       throw error;

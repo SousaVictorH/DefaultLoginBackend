@@ -5,7 +5,13 @@ const { unauthorized } = require('../helpers/messages');
 
 const { validations, encrypter, compare, generateToken } = require('../utils');
 
-const { Login, SignUp, Authenticate, Update } = require('../domain/useCases');
+const {
+    Login,
+    SignUp,
+    Authenticate,
+    Update,
+    GetUser
+} = require('../domain/useCases');
 
 const {
     removeUndefinedParams,
@@ -47,6 +53,14 @@ module.exports = {
             delete newUser.password;
 
             return newUser;
+        } catch (error) {
+            throw error;
+        }
+    },
+
+    async getUser({ userID, email }){
+        try {
+            return GetUser(userID, email, UsersDatabase);
         } catch (error) {
             throw error;
         }
