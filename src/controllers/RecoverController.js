@@ -5,7 +5,6 @@ const PasswordRecoveryDatabase = require('../databases/PasswordRecoveryDatabase'
 
 const { badRequest } = require('../helpers/httpResponse');
 
-const { badRequest } = require('../helpers/httpResponse');
 const { userNotFound, dataMalformed } = require('../helpers/messages');
 
 const sendRecoveryEmailTemplate = require('../resourses/templates/template-send-recover-email');
@@ -38,11 +37,11 @@ module.exports = {
 
             const { subject, text } = sendRecoveryEmailTemplate(token);
 
-            await EmailController.sendMail({
-                to: email,
-                subject,
-                text
-            })
+            // await EmailController.sendMail({
+            //     to: email,
+            //     subject,
+            //     text
+            // });
 
             await PassCreate(email, token, PasswordRecoveryDatabase);
         } catch (error) {

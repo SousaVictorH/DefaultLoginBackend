@@ -1,11 +1,11 @@
-const RecoverControlle = require('../controllers/RecoverControlle');
+const RecoverController = require('../controllers/RecoverController');
 
 module.exports = {
     async recovery(req, res){
         try {
             const { email } = req.body;
 
-            await RecoverControlle.recovery(email);
+            await RecoverController.recovery(email);
 
             return res.status(200).json()            
         } catch (error) {
@@ -19,7 +19,7 @@ module.exports = {
         try {
             const { email, token, password } = req.body;
 
-            await RecoverControlle.update(email, token, password);
+            await RecoverController.update(email, token, password);
 
             return res.status(200).json()      
         } catch (error) {

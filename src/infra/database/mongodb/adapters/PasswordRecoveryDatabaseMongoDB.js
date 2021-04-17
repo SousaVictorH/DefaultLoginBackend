@@ -5,6 +5,7 @@ const PasswordRecoveryDatabaseMongoDB = {
     async create(email, token) {
         try {
             const newPassword = await PasswordRecovery.create({ email, token });
+            
             return PasswordRecoveryModel(newPassword);
         } catch (error) {
             throw error;
