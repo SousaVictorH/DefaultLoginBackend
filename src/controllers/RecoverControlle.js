@@ -6,15 +6,18 @@ const PasswordRecoveryDatabase = require('../databases/PasswordRecoveryDatabase'
 const { badRequest } = require('../helpers/httpResponse');
 
 const { badRequest } = require('../helpers/httpResponse');
-const { userNotFound } = require('../helpers/messages');
+const { userNotFound, dataMalformed } = require('../helpers/messages');
 
 const sendRecoveryEmailTemplate = require('../resourses/templates/template-send-recover-email');
 
-const { generateRandomHash } = require('../utils');
+const { generateRandomHash, encrypter } = require('../utils');
 
 const {
     GetUser,
-    PassCreate
+    PassCreate,
+    PassRead,
+    PassRemove,
+    Update
 } = require('../domain/useCases');
 
 module.exports = {
@@ -41,13 +44,33 @@ module.exports = {
                 text
             })
 
-            await Create(email, token, PasswordRecoveryDatabase);
+            await PassCreate(email, token, PasswordRecoveryDatabase);
         } catch (error) {
             
         }
     },
 
     async update(email, token, password){
+        try {
+            const object = await PassRead(email, PasswordRecoveryDatabase);
 
+            if (!object || object.token !== token) {
+                throw badRequest({
+                    source: 'controller - password recovery',
+                    message: dataMalformed,
+                });
+            }
+
+            const passwordEncrypted = await encrypter(password);
+
+            const filters = { email };
+            const data = { password: passwordEncrypted };
+
+            await Update(filters, data, UserDatabase);
+
+            await PassRemove(object, PasswordRecoveryDatabase);
+        } catch (error) {
+            throw error;
+        }
     }
 }
