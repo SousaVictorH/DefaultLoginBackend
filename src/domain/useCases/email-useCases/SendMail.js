@@ -7,15 +7,15 @@ const send = async mail => {
     await transporter.sendMail(mail);
 };
 
-module.exports = {
-    async sendMail(to, subject, text) {
-        const mail = {
-            from: `${sender} <${senderEmail}>`,
-            to,
-            subject,
-            text,
-        };
+const sendMail = async (to, subject, text) => {
+    const mail = {
+        from: `${sender} <${senderEmail}>`,
+        to,
+        subject,
+        text,
+    };
 
-        await send(mail);
-    }
+    await send(mail).catch(err => console.log(err));
 }
+
+module.exports = sendMail;

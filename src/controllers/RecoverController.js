@@ -37,11 +37,11 @@ module.exports = {
 
             const { subject, text } = sendRecoveryEmailTemplate(token);
 
-            // await EmailController.sendMail({
-            //     to: email,
-            //     subject,
-            //     text
-            // });
+            await EmailController.sendMail({
+                to: email,
+                subject,
+                text
+            });
 
             await PassCreate(email, token, PasswordRecoveryDatabase);
         } catch (error) {
