@@ -1,5 +1,5 @@
 const MissingParamError = ({ source, param }) => {
-    return {
+    throw {
         error: {
             source,
             message: `missing param error - ${param}`,
