@@ -19,7 +19,7 @@ const User = ({
         id,
         name,
         genre,
-        dateOfBirth: new Date(dateOfBirth),
+        dateOfBirth,
         email,
         password,
         phone,
