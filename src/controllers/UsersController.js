@@ -115,6 +115,14 @@ module.exports = {
 
             removeUndefinedParams(data);
 
+            if (data.address) {
+                const source = 'UserController - update';
+
+                const addressModel = AddressModel(address);
+    
+                validations.missingParam({source, listParams: addressModel});
+            }
+
             if (objIsEmpty(data)){
                 const passwordEncrypted = await encrypter(password);
                 data.password = passwordEncrypted;
