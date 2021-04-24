@@ -45,7 +45,7 @@ module.exports = {
 
             await PassCreate(email, token, PasswordRecoveryDatabase);
         } catch (error) {
-            
+            throw error;
         }
     },
 
