@@ -33,6 +33,10 @@ module.exports = {
             };
             const source = 'UserController - singUp';
 
+            if (!address.complement) {
+                address.complement = ' ';
+            }
+
             const addressModel = AddressModel(address);
 
             validations.missingParam({source, listParams: params});
@@ -117,6 +121,10 @@ module.exports = {
 
             if (data.address) {
                 const source = 'UserController - update';
+
+                if (!address.complement) {
+                    address.complement = ' ';
+                }
 
                 const addressModel = AddressModel(address);
     
