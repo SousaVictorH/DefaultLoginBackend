@@ -29,9 +29,6 @@ module.exports = {
 
   async update(filters, toUpdate) {
     try {
-      console.log(filters);
-      console.log(toUpdate);
-
       await Users.updateOne(filters, toUpdate, { new: true }).catch(err => { throw err });
     } catch (error) {
       throw error;

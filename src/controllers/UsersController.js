@@ -33,16 +33,23 @@ module.exports = {
             };
             const source = 'UserController - singUp';
 
-            if (!address.complement) {
-                address.complement = ' ';
-            }
-
             const addressModel = AddressModel(address);
 
             validations.missingParam({source, listParams: params});
             validations.paramsIsMalformed({source, listParams: params});
 
-            validations.missingParam({source, listParams: addressModel});
+            validations.missingParam({source, listParams: {
+                street: addressModel.street,
+                city: addressModel.city,
+                zipCode: addressModel.zipCode,
+                district: addressModel.district,
+                uf: addressModel.uf,
+                number: addressModel.number,
+            }});
+
+            if (!addressModel.complement) {
+                addressModel.complement = '';
+            }
 
             const passwordEncrypted = await encrypter(password);
 
@@ -122,13 +129,20 @@ module.exports = {
             if (data.address) {
                 const source = 'UserController - update';
 
-                if (!address.complement) {
-                    address.complement = ' ';
-                }
-
                 const addressModel = AddressModel(address);
     
-                validations.missingParam({source, listParams: addressModel});
+                validations.missingParam({source, listParams: {
+                    street: addressModel.street,
+                    city: addressModel.city,
+                    zipCode: addressModel.zipCode,
+                    district: addressModel.district,
+                    uf: addressModel.uf,
+                    number: addressModel.number,
+                }});
+
+                if (!addressModel.complement) {
+                    addressModel.complement = '';
+                }
             }
 
             if (objIsEmpty(data)){
